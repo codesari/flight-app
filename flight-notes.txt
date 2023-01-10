@@ -1,0 +1,90 @@
+? SDLC (Software Development Life Cycle)
+* 1.Requirements Analysis
+en önemli aşama.%70 burada efor sarfedilir.gerisi kolay olur.eğer bu aşama atlanırsa diğer aşamalardan tekrar buraya dönülür bu da zaman kaybı demektir.
+* 2.Design
+* 3.Development
+* 4.Testing
+* 5.Maintenance
+bu ömür boyu da olabiliyor,bu yüzden bu aşamayı dahil etmeyenler oluyor projede.
+ ? Agile Metodları
+ 1.Product Owner istenen proje ile alakalı bilgileri topluyor,burdan bir iş yükü çıkartıyor.bu iş yükü Product Backlog olarak adlandırılır.projeye ait tüm işler product backlog'da bekler.
+ 2.daha sonra product owner ve scrum master bir araya gelip önümüzdeki sprintlerde neler yapılacak onu planlıyorlardı
+ 3.işlerin ilgili sprintte bitecek kadar olanını sprint backlog'a alıyorlar
+ 4.Developer'lar scrum master'ın yönlendirmesiyle sprint backklog'taki işleri alıyorlar
+ 5.Daily Scrum : günlük toplantı,dün ne yaptın problem yaşadın mı bugün ne yapacaksın
+ proje ekibinin çok kalabalık olması tavsiye edilmiyor.3-9 arası olmalı.toplantı çok uzun sürmemeli
+* Project Pip-line
+ Pipe-line (tıpkı bir fabrikanın ürün bandına giren bir ürün gibi çıkana kadar ki işlemlere deniyor)
+ development aşamasından sonra build,test,release ve deploy işlemleri oluyor
+
+ ! PostgreSQL'i kullanmak için
+ * pip install psycopg2
+ ! Debug Toolbar (hataları takip etmek,izlemek için bir araç)
+ (bu kurulu olmadan swagger bende hata verdi,bu yüzden önce bunu kuruyorum)
+ * pip install django-debug-toolbar
+? eklenmesi gerekenler (documentation) :
+https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+ ! Swagger
+ * pip install drf-yasg
+ ? installed apps --> 'drf_yasg'
+
+ otomatik olarak dökümantasyon oluşturma aracı,backend'te oluşturduğumuz endpointleri yani api leri dökümantasyon yapar.(ileride endpointlerin sayısı arttıkça nereye hangi istek ne için atılacak konsu karışacağı için böyle bir düzenlemeye ihtiyaç var)
+
+ ? her yüklediğimiz paketi settins'te installed app'e eklememiz gerekmez,bunun için ilgili paketin dökümantasyonuna gitmeliyiz.orada ekle diyorsa ekleriz.
+ https://drf-yasg.readthedocs.io/en/stable/readme.html?highlight=installation#installation
+
+ dökümantasyon'dan urls.py'a gerekenleri ekliyorum :
+ (bu customize edilmiş hali (projeye özel)) 
+
+from django.contrib import admin
+from django.urls import path,include
+# Three modules for swagger:
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+schema_view = get_schema_view(
+    openapi.Info(
+    title="Flight Reservation API", 
+    default_version="v1",
+    description="Flight Reservation API project provides flight and reservation info",
+    terms_of_service="#", 
+    contact=openapi.Contact(email="rafe@clarusway.com"), # Change e-mail on this line!
+    license=openapi.License(name="BSD License"),),
+    public=True, 
+    permission_classes=[permissions.AllowAny],
+    )
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    # Url paths for swagger:
+    path("swagger(<format>\.json|\.yaml)",schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    path("swagger/", schema_view.with_ui("swagger", cache_timeout=0),name="schema-swagger-ui"),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path('__debug__/', include('debug_toolbar.urls')),
+]
+
+? kurduktan sonra şu endpointleri inceleyebiliriz
+http://127.0.0.1:8000/swagger/
+http://127.0.0.1:8000/redoc/
+
+! Development ve Product kısmini ayırma
+tüm ayarların tek bir settings.py'da olması best-practice değil,o yüzden parçalamak tavsiye ediliyor(büyük projelerde)
+*settings adında bir klaösr oluşturulur,içinde:
+__init__,base,dev ve prod .py dosyaları oluşturulur..
+
+bu işlemin ardından settings.py'ı silebilirim.(içeriğini base.py'a attıktan sonra)
+
+! PostgreSQL aşamaları
+pgAdmin'de flight adında bir db oluşturduk.
+.env dosyasını düzenledik
+development aşamasında sqlite çalışsın,product ortaminda postgresql çalışsın.bu ayarı .env dosyasından seçiyoruz
+örneğin devepoment aşamasında debug true olsun,prıduct aşamasında debug false olsun (çok mantıklı)
+? CommandError: You must set settings.ALLOWED_HOSTS if DEBUG is False.
+eğer DEBUG=False yapılırsa ALLOWED_HOSTS = ["*"] ayarını yapmamız gerekiyor.
+
+! Logging
+loglama işlemi hem dev de hem de prod ta lazım olabilir.
+
+
+level:config('dajngo_log_level'), haline getir
+
+

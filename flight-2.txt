@@ -1,0 +1,6 @@
+Authentication için obtain.auth yönteminden başka third party olan bir paket kullanacağız.kullanacağız.
+! django-rest-auth
+https://www.django-rest-framework.org/api-guide/authentication/#django-rest-auth-dj-rest-auth
+* dökümantasyon
+https://django-rest-auth.readthedocs.io/en/latest/
+? pip install django-rest-auth

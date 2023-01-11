@@ -6,6 +6,9 @@ en önemli aşama.%70 burada efor sarfedilir.gerisi kolay olur.eğer bu aşama a
 * 4.Testing
 * 5.Maintenance
 bu ömür boyu da olabiliyor,bu yüzden bu aşamayı dahil etmeyenler oluyor projede.
+? Projeye başlamadan önce oluşturulan dökümanlar (proje tasarımı)
+* BRD(Business requirements documents) - ERD(Entity Relationship Diagram)
+* Swagger(Document+Test) (dökümantasyon oluşturma aracı)
  ? Agile Metodları
  1.Product Owner istenen proje ile alakalı bilgileri topluyor,burdan bir iş yükü çıkartıyor.bu iş yükü Product Backlog olarak adlandırılır.projeye ait tüm işler product backlog'da bekler.
  2.daha sonra product owner ve scrum master bir araya gelip önümüzdeki sprintlerde neler yapılacak onu planlıyorlardı
@@ -66,6 +69,8 @@ urlpatterns = [
 http://127.0.0.1:8000/swagger/
 http://127.0.0.1:8000/redoc/
 
+
+
 ! Development ve Product kısmini ayırma
 tüm ayarların tek bir settings.py'da olması best-practice değil,o yüzden parçalamak tavsiye ediliyor(büyük projelerde)
 *settings adında bir klaösr oluşturulur,içinde:
@@ -84,7 +89,13 @@ eğer DEBUG=False yapılırsa ALLOWED_HOSTS = ["*"] ayarını yapmamız gerekiyo
 ! Logging
 loglama işlemi hem dev de hem de prod ta lazım olabilir.
 
+terminal'de [y/N] yes or no, N büyük harf olan default degerdir.enter a basarsan N'yi kabul eder
 
-level:config('dajngo_log_level'), haline getir
+! Template
+github'da projenin setup kısmını template olarak kaydedip,daha sonraki projeler için direk setup'tan başlanabilir.
+
+
+
+
 
 

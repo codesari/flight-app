@@ -3,7 +3,11 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
+from dj_rest_auth.serializers import TokenSerializer
+
 class RegisterSerializer(serializers.ModelSerializer):
+
+
     first_name=serializers.CharField(required=True)
     email = serializers.EmailField(required=True, validators=[
                                    UniqueValidator(queryset=User.objects.all())])
@@ -59,7 +63,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         # password u daha sonra hash'leyip göndermek için değişkene atadık.
         # user olusturuyorum
         user=User.objects.create(**validated_data)
-        # **validated_data alttaki kodu kısaltıyor (ilgili field'ları map ediyor)
+        # **validated_data alttaki kodu kısaltıyor (ilgili field'ları map'liyor,eşleştiriyor)
         #  username=validate_data['username], email = va.......
         # password olusturup hash'liyorum
         user.set_password(password)
@@ -67,3 +71,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+
+# ! Standart olan TokenSerializer login işleminden sonra bana sadace key döndürüyor.Fakat kullanıcı bilgilerimin de dönmesi lazım (avatar,isim vs..).bunlar için front-end'te ayrıca bir istek atmak gereksiz olduğu için tek seferde halletmem lazım.bunun için key ile birlikte user'ı da döndürüyorum.bunu yapabilmem için custom token serializer yazıyorum.
+class UserTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "first_name", "last_name", "email")
+    
+    
+class CustomTokenSerializer(TokenSerializer):
+    user = UserTokenSerializer(read_only = True)
+    
+    class Meta(TokenSerializer.Meta):
+        fields = ("key", "user")

@@ -29,3 +29,25 @@ def validate_first_name(self,value):
 ! Object-level Validation
 birden fazla field ile ilgili validation yapıyorsam object-level olur..
 password-password2 karşılaştırması için object-level validation kullanıyoruz.
+
+bir kullanıcı register olduktan sonra onu tekrardan login sayfasına yönlendirmeye gerek yok.direk login olmuş gibi devam edilir (genelde siteler de böyle yapar)
+
+! Generate token with signals
+! Return user data after login
+kullanıcı login olduktan sonra profil resmi,username.. gibi bilgiler gelmesi gerekir
+
+? Sinyal yöntemi ile token oluşturmak için signals.py dosyası oluşturdum
+fakat ayrı bir dosya olarak oluşturduğum için bunu apps.py'a tanıtmam lazım.
+
+def ready(self) -> None:
+        import users.signals
+
+signal'i models içinde yazsaydım bu işleme gerek yoktu.
+
+! TOKEN'I RESPONSE OLARAK DÖNDÜRMEK İÇİN
+views'te CreateAPIView'in kaynak kodundaki create metodunu alıp aynı yere (views'e kopyaladım) (parent'dan kendi class'ıma aldım) kendime göre override yapacağım
+? Custom token serializer için  --> base.py
+REST_AUTH_SERIALIZERS = {
+    'TOKEN_SERIALIZER': 'users.serializers.CustomTokenSerializer',
+    
+}

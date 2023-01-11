@@ -49,5 +49,7 @@ views'te CreateAPIView'in kaynak kodundaki create metodunu alıp aynı yere (vie
 ? Custom token serializer için  --> base.py
 REST_AUTH_SERIALIZERS = {
     'TOKEN_SERIALIZER': 'users.serializers.CustomTokenSerializer',
-    
+
 }
+
+? buraya kadarki aşamalar template olarak kaydedilip,daha sonraki projeler için hızlı başlangıç olabilir

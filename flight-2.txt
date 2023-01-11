@@ -1,6 +1,22 @@
-Authentication için obtain.auth yönteminden başka third party olan bir paket kullanacağız.kullanacağız.
-! django-rest-auth
+Authentication için obtain.auth yönteminden başka third party olan bir paket kullanacağız.
+! dj-rest-auth
 https://www.django-rest-framework.org/api-guide/authentication/#django-rest-auth-dj-rest-auth
 * dökümantasyon
-https://django-rest-auth.readthedocs.io/en/latest/
-? pip install django-rest-auth
+https://dj-rest-auth.readthedocs.io/en/latest/installation.html
+? pip install dj-rest-auth
+
+? token ayarlarını base'e eklemeyi unutmas
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+! dökümantasyon'dan API endpointslere bakılabilir
+https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html
+..
+http://127.0.0.1:8000/users/auth/login/
+http://127.0.0.1:8000/users/auth/logout/
+
+* logout yapınca token silinir,fakat browserdan yaptığımız zaman browser token'ı silmiyor.(logout olurken token göndermediğimiz için).bu yüzden postman gibi araçlarla backendde endpointleri test ediyoruz
+? logout yaparken kimin sistem logout oldugunu bilmesi lazım bu yüzden logout işlemi yaparken token'ı da gönderiyoruz

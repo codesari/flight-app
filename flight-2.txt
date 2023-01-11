@@ -5,7 +5,7 @@ https://www.django-rest-framework.org/api-guide/authentication/#django-rest-auth
 https://dj-rest-auth.readthedocs.io/en/latest/installation.html
 ? pip install dj-rest-auth
 
-? token ayarlarını base'e eklemeyi unutmas
+? token ayarlarını base'e eklemeyi unutma
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -20,3 +20,12 @@ http://127.0.0.1:8000/users/auth/logout/
 
 * logout yapınca token silinir,fakat browserdan yaptığımız zaman browser token'ı silmiyor.(logout olurken token göndermediğimiz için).bu yüzden postman gibi araçlarla backendde endpointleri test ediyoruz
 ? logout yaparken kimin sistem logout oldugunu bilmesi lazım bu yüzden logout işlemi yaparken token'ı da gönderiyoruz
+
+! Field-level Validation
+serializers'da istediğim bir filed için de validation yazabilirim
+örneğin first_name ile ilgili bir validation yazmak istiyorum
+def validate_first_name(self,value):
+(burada value --> first_name oluyor)
+! Object-level Validation
+birden fazla field ile ilgili validation yapıyorsam object-level olur..
+password-password2 karşılaştırması için object-level validation kullanıyoruz.

@@ -1,0 +1,26 @@
+* PROJECT PLAN
+Tablolar
+-Flight (uçuşların olduğu tablo)
+-Reservation (seçilen bir uçuşa göre yapılan rezervasyonlar)
+-Passenger (rezervasyon yaptıran yolcu bilgisi)
+
+? FLİGHT 
+    - Client Users
+        - uçuşları görüntüleyebilirler
+    - Staff Members
+        - tüm uçuşları görüntüleyebilir ve CRUD işlemleri yapabilir
+? RESERVATİON
+    - Client Users  
+        -crud reservation (their own reservation)
+    - Staff Users   
+        - crud reservations (all reservation)
+
+##############################################
+
+* flight app içinde models.py'da bu üç tablomuzu oluşturuyoruz.
+
+* related_name'i anlamak için resimdeki tabloyu incele
+    - Reservation modelinden flight field'ına direk ulaşabiliyorum
+    - Fakat Flight modelinden Reservation modeline direkt iletişim yok      bunun için related_name keyword'ü kullanılır.
+    - yani related_name,child'tan parent'a iletişimde kullanılır
+ 

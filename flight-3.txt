@@ -23,4 +23,64 @@ Tablolar
     - Reservation modelinden flight field'ına direk ulaşabiliyorum
     - Fakat Flight modelinden Reservation modeline direkt iletişim yok      bunun için related_name keyword'ü kullanılır.
     - yani related_name,child'tan parent'a iletişimde kullanılır
+
+? permission (tekrar)
+views'de bu iki satır kod ile permission yapıyoruz..
+from rest_framework.permissions import  IsAdminUser
+permission_classes=(IsAdminUser)
+
+! syntax'a dikkat (ikisinden biri yazılmalı)
+permission_classes=[IsAdminUser]
+permission_classes=(IsAdminUser,)
+
+"login olmayan kullanıcılar GET yapabilsin" gibi ayarlar için custom permission yazıyorum.bunu da varolan permissionların kaynak kodundan alıp değiştiriyorum.
+? permissions.py oluşturuyorum
+SAFE_METHODS --> data'da değişiklik yapmayan metodlar.get gibi
+
+* Reservations'lar id'ler şeklinde dönüyor.bunu daha anlamlı hale getirmek için serializer yazıyoruz
+ {
+        "id": 1,
+        "user": 4,
+        "flight": 2,
+        "passenger": [
+            1,
+            2,
+        ]
+    }
+
+! örneğin buradaki passaenger'ı anlamlı olarak döndürmek için bu field için bir serializer yazıp bu serializer'ı çektiğim yerden alıcam yani Reservation serializer'ın içinden çağıracağım field olarak.
+passenger=PassengerSerializer(many=True)
+passenger'in içinde birden fazla obje döndüğü için (many=True) parametresi yazıyoruz.
+* fieldlara ayar çekiyoruz
+flight=serializers.StringRelatedField()
+StringRelatedField --> __str__ fonksiyonundaki ismi gelsin 
+
+! Many-To-Many RELATİONS'A ÖZEL BURAYA DİKKAT !
+? örnek data :
+{
+        "id": 1,
+        "flight": "f713 - istanbul - adana",
+        "flight_id": 2,
+        "user": "admin",
+        "passenger": [
+            {
+                "id": 1,
+                "first_name": "ahmet",
+                "last_name": "sari",
+                "email": "as@test.com",
+                "phone_number": 12455675,
+                "create_date": "2023-01-13T12:56:02.189289Z"
+            }
+        ]
+    }
+rezervasyon create etmek için böyle gelen bir verimi rezervasyon tabloma kaydedeceğim.Fakat rezervasyon tablomda sadece flight_id ve user_id var PASSENGER datası yok,çünkü many-to-many relations'da üçüncü bir tablo oluşturulur.bu yüzden gelen data içerisinden passenger datasını çıkarıp kalan data ile rezervasyonu kayıt ediyorum.bunları gerçekleştirmek için serializrs da ReservationSerializer ın altında def create merodu yazdık
+
+! Reservation'da filtreleme (ReservationsView)
+*herhangi bir user token'ı ile get isteiği yaptığım zaman sadece o user'a ait rezervasyonlar gözüksün istiyorum,normali de budur.(şuan herhangi bir user get yaptığında tüm userların rezervasyonlarını görüyor)
+
+class ReservationsView(viewsets.ModelViewSet):
+     queryset = Reservation.objects.all()
+
+
  
+

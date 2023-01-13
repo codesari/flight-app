@@ -39,6 +39,8 @@ class Reservation(models.Model):
     # Reservation modelinden flight field'ına direk ulaşabiliyorum
     # Fakat Flight modelinden Reservation modeline direkt iletişim yok bunun için related_name keyword'ü kullanılır.
     # yani related_name,child'tan parent'a iletişimde kullanılır
+    def __str__(self):
+        return f'{self.flight}/{self.user}'
     
     
 

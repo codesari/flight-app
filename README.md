@@ -8,7 +8,7 @@
 
 **Backend:** Python, Django
 
-**Databases:** PostgreSQL, SQLite
+**Databases:** PostgreSQL
 
 **Deploy:** pythonanywhere
 
